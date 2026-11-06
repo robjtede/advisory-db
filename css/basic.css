@@ -52,6 +52,21 @@ header a, footer a {
   font-weight: 500;
 }
 
+/* Add an icon after external links in advisory content */
+.advisory article a:not(.floating-menu a):not([href^="/"]):not([href^="#"])::after {
+  background: url("/img/external-link.svg") center right no-repeat;
+  display: inline-block;
+  content: " ";
+  width: 16px;
+  height: 16px;
+  margin-left: 3px;
+  vertical-align: middle;
+}
+
+.floating-menu {
+  float: right;
+}
+
 hr {
   border: 1px solid rgba(148, 148, 148, 0.16);
   margin: 2em 0;
@@ -60,6 +75,52 @@ hr {
 .logo-image {
   max-width: 400px;
   max-height: 100px;
+}
+
+.header-top {
+  position: relative;
+}
+
+.search {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.search input[type=search] {
+  width: 100%;
+  padding: 8px 16px;
+  margin: 8px 0;
+  box-sizing: border-box;
+  background-color : rgba(255, 255, 255, 0.3);
+  color: white;
+  font-weight: 500;
+  font-size: .8em;
+  border: 2px solid white;
+  border-radius: 4px;
+}
+
+.search input[type=search]::placeholder {
+    opacity: .5;
+    color: white;
+}
+
+.search-index input[type=search] {
+  width: 60%;
+  padding: 8px 16px;
+  margin: 8px 0;
+  box-sizing: border-box;
+  background-color : rgba(255, 255, 255, 0.3);
+  color: white;
+  font-weight: 500;
+  font-size: 1.1em;
+  border: 3px solid white;
+  border-radius: 4px;
+}
+
+.search-index input[type=search]::placeholder {
+    opacity: .5;
+    color: white;
 }
 
 blockquote {
@@ -116,6 +177,10 @@ main.advisory ul {
   margin-top:  0;
 }
 
+main.advisory {
+  margin-bottom: 50px;
+}
+
 dd ul {
   list-style: none;
   padding-left: 0;
@@ -142,4 +207,84 @@ p.warning {
 header span.subtitle p {
   font-size: 1.5em;
   margin: 0;
+}
+
+.tag {
+  background: #535353;
+  padding: 3px;
+}
+
+.critical {
+  background: darkred;
+}
+
+.high {
+  background: #b90000;
+}
+
+.medium {
+  background: #c68000;
+}
+
+.low {
+  background: #b5b500;
+}
+
+.info {
+  background: #190079;
+}
+
+.advisory p.license {
+    font-style: italic;
+    margin-top: 1.5em;
+}
+
+/* Light theme */
+
+@media (prefers-color-scheme: light) {
+  article a {
+    color: #1233b6;
+  }
+
+  a:hover {
+    color: #494949;
+  }
+
+  .withdrawn {
+    color: #494949;
+  }
+
+  .search-index input[type="search"], .search input[type="search"] {
+    background-color: #b2b2b2;
+    color: black;
+    border-color: black;
+  }
+
+  .search-index input[type=search]::placeholder, .search input[type=search]::placeholder {
+    color: black;
+  }
+
+  .critical {
+    background: #b00;
+  }
+
+  .high {
+    background: #c00;
+  }
+
+  .medium {
+    background: #ea0;
+  }
+
+  .low {
+    background: #dd0;
+  }
+
+  .info {
+    background: #77f;
+  }
+
+  .advisory article a:not(.floating-menu a):not([href^="/"]):not([href^="#"])::after {
+    filter: invert(1);
+  }
 }

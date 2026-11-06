@@ -1,0 +1,6110 @@
+<!DOCTYPE html>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8">
+
+<meta name="author" content="Rust Project Developers">
+<meta name="description" content="Security advisory database for Rust crates published through https://crates.io">
+<title>Advisories in category &#39;memory-corruption&#39; › RustSec Advisory Database</title>
+
+<link href="//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,300italic,400italic" rel="stylesheet">
+<link href="/css/basic.css" rel="stylesheet">
+<link href="/css/highlight.css" rel="stylesheet">
+<link href="/css/index.css" rel="stylesheet">
+
+<script src="/js/index.js" defer></script>
+<script src="/js/search.js" defer></script>
+
+<header>
+  <div class="header-top">
+    <h1><a href="/">
+	<picture>
+          <source srcset="/img/rustsec-logo-light.svg"  media="(prefers-color-scheme: light)">
+          <img src="/img/rustsec-logo-dark.svg" alt="RustSec logo" class="logo-image">
+        </picture>
+    </a></h1>
+    
+    <div class="search">
+      <form onsubmit="return searchform();">
+        <input type="search" id="search-term"
+               placeholder="Look up package or ID..." required
+               size="20">
+      </form>
+    </div>
+    
+  </div>
+  <nav>
+    <div>
+      <a href="/">About</a>
+      <a href="/advisories/">Advisories</a>
+      <a href="/contributing.html">Report Vulnerabilities</a>
+    </div>
+    <div>
+      <a href="https://rust-lang.zulipchat.com/login/#narrow/stream/146229-wg-secure-code/" title="Zulip" aria-label="Zulip"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="height:1em;fill:currentColor"><path d="M473.09 122.97c0 22.69-10.19 42.85-25.72 55.08L296.61 312.69c-2.8 2.4-6.44-1.47-4.42-4.7l55.3-110.72c1.55-3.1-.46-6.91-3.64-6.91H129.36c-33.22 0-60.4-30.32-60.4-67.37 0-37.06 27.18-67.37 60.4-67.37h283.33c33.22-.02 60.4 30.3 60.4 67.35zM129.36 506.05h283.33c33.22 0 60.4-30.32 60.4-67.37 0-37.06-27.18-67.37-60.4-67.37H198.2c-3.18 0-5.19-3.81-3.64-6.91l55.3-110.72c2.02-3.23-1.62-7.1-4.42-4.7L94.68 383.6c-15.53 12.22-25.72 32.39-25.72 55.08 0 37.05 27.18 67.37 60.4 67.37zm522.5-124.15l124.78-179.6v-1.56H663.52v-48.98h190.09v34.21L731.55 363.24v1.56h124.01v48.98h-203.7V381.9zm338.98-230.14V302.6c0 45.09 17.1 68.03 47.43 68.03 31.1 0 48.2-21.77 48.2-68.03V151.76h59.09V298.7c0 80.86-40.82 119.34-109.24 119.34-66.09 0-104.96-36.54-104.96-120.12V151.76h59.48zm244.91 0h59.48v212.25h104.18v49.76h-163.66V151.76zm297 0v262.01h-59.48V151.76h59.48zm90.18 3.5c18.27-3.11 43.93-5.44 80.08-5.44 36.54 0 62.59 7 80.08 20.99 16.72 13.22 27.99 34.99 27.99 60.64 0 25.66-8.55 47.43-24.1 62.2-20.21 19.05-50.15 27.6-85.13 27.6-7.77 0-14.77-.39-20.21-1.17v93.69h-58.7V155.26zm58.7 118.96c5.05 1.17 11.27 1.55 19.83 1.55 31.49 0 50.92-15.94 50.92-42.76 0-24.1-16.72-38.49-46.26-38.49-12.05 0-20.21 1.17-24.49 2.33v77.37z"/></svg></a>
+      <a href="https://twitter.com/RustSec/" title="Twitter" aria-label="Twitter"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="height:1em;fill:currentColor"><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg></a>
+      <a href="https://github.com/RustSec/" title="GitHub" aria-label="GitHub"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512" style="height:1em;fill:currentColor"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg></a>
+      <a href="/feed.xml" title="Atom Feed" aria-label="Atom Feed"><svg xmlns="http://www.w3.org/2000/svg" style="height:1em" viewBox="0 0 8 8">
+        <circle class="symbol" cx="2" cy="6" r="1" />
+        <path   class="symbol" d="m 1,4 a 3,3 0 0 1 3,3 h 1 a 4,4 0 0 0 -4,-4 z" />
+        <path   class="symbol" d="m 1,2 a 5,5 0 0 1 5,5 h 1 a 6,6 0 0 0 -6,-6 z" />
+      </svg></a>
+    </div>
+  </nav>
+</header>
+
+<main class="advisories">
+  <article>
+
+    <header>
+      <span class="floating-menu">
+  <a href="/categories/">Categories</a> ⋅
+  <a href="/keywords/">Keywords</a> ⋅
+  <a href="/packages/">Packages</a>
+</span>
+      <h1>Advisories in category &#39;memory-corruption&#39;</h1>
+    </header>
+
+    <ul>
+      
+      <li>
+  <time datetime="2026-10-27">
+    October 27, 2026
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2026-0413.html">
+      RUSTSEC-2026-0413: Vulnerability in rustls-ffi
+    </a>
+  </h3>
+  <span><p>Use-after-free of caller-owned server name in client connection constructors</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2026-10-26">
+    October 26, 2026
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2026-0411.html">
+      RUSTSEC-2026-0411: Unsoundness in dahl-salso
+    </a>
+  </h3>
+  <span><p>Out-of-bounds read in <code>Log2Cache::nlog2n()</code>, <code>nlog2n_difference()</code> and <code>plog2p()</code></p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2026-10-26">
+    October 26, 2026
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag medium">MEDIUM</span>
+      
+    <a href="/advisories/RUSTSEC-2026-0409.html">
+      RUSTSEC-2026-0409: Vulnerability in skiplist
+    </a>
+  </h3>
+  <span><p>Use-after-free from a comparator that answers inconsistently</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2026-10-26">
+    October 26, 2026
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag low">LOW</span>
+      
+    <a href="/advisories/RUSTSEC-2026-0408.html">
+      RUSTSEC-2026-0408: Unsoundness in skiplist
+    </a>
+  </h3>
+  <span><p>Aliasing violations in splice, mutable iteration and cursors</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2026-10-26">
+    October 26, 2026
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2026-0410.html">
+      RUSTSEC-2026-0410: Vulnerability in zstd-sys
+    </a>
+  </h3>
+  <span><p>WebAssembly allocator shim corrupts memory on allocation failure</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2026-10-26">
+    October 26, 2026
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2026-0399.html">
+      RUSTSEC-2026-0399: Unsoundness in zstd-safe
+    </a>
+  </h3>
+  <span><p>Use-after-free through <code>init_using_cdict</code> and <code>init_using_ddict</code></p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2026-10-26">
+    October 26, 2026
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2026-0398.html">
+      RUSTSEC-2026-0398: Vulnerability in zstd-safe
+    </a>
+  </h3>
+  <span><p><code>Seekable::decompress</code> sets a <code>Vec</code> length beyond its capacity for offsets past the end</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2026-10-26">
+    October 26, 2026
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2026-0402.html">
+      RUSTSEC-2026-0402: Unsoundness in zstd-safe
+    </a>
+  </h3>
+  <span><p>Heap buffer overflow in <code>CCtx::try_clone</code> on a multithreaded context</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2026-10-26">
+    October 26, 2026
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2026-0396.html">
+      RUSTSEC-2026-0396: Unsoundness in zstd-safe
+    </a>
+  </h3>
+  <span><p><code>Seekable</code> reads a NULL or out-of-bounds seek table</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2026-10-26">
+    October 26, 2026
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2026-0406.html">
+      RUSTSEC-2026-0406: Unsoundness in zstd-safe
+    </a>
+  </h3>
+  <span><p>Use-after-free when changing a multithreaded context with an unfinished frame</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2026-10-26">
+    October 26, 2026
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2026-0404.html">
+      RUSTSEC-2026-0404: Unsoundness in zstd-safe
+    </a>
+  </h3>
+  <span><p>Double free in <code>DCtx::try_clone</code></p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2026-10-23">
+    October 23, 2026
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2026-0386.html">
+      RUSTSEC-2026-0386: Unsoundness in tokio
+    </a>
+  </h3>
+  <span><p><code>AsyncFd::new</code> and related constructors violate I/O safety</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2026-10-22">
+    October 22, 2026
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2026-0384.html">
+      RUSTSEC-2026-0384: Vulnerability in tokio
+    </a>
+  </h3>
+  <span><p>Race condition in <code>tokio::time::Interval</code> on Tokio v1.54.0</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2026-10-03">
+    October  3, 2026
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2024-0448.html">
+      RUSTSEC-2024-0448: Unsoundness in rutie
+    </a>
+  </h3>
+  <span><p><code>parse_arguments</code> reads a caller-supplied pointer as a slice</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2026-09-25">
+    September 25, 2026
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2026-0309.html">
+      RUSTSEC-2026-0309: Unsoundness in bun_collections
+    </a>
+  </h3>
+  <span><p><code>SinglyLinkedList::remove</code> dereferences a null link</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2026-09-24">
+    September 24, 2026
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2026-0308.html">
+      RUSTSEC-2026-0308: Unsoundness in salsa
+    </a>
+  </h3>
+  <span><p>Use-after-free in interned values and cached function results</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2026-09-23">
+    September 23, 2026
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2026-0305.html">
+      RUSTSEC-2026-0305: Vulnerability in librsvg
+    </a>
+  </h3>
+  <span><p>Use-after-free when XML includes have duplicated entities</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2026-09-23">
+    September 23, 2026
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2026-0306.html">
+      RUSTSEC-2026-0306: Unsoundness in faster-hex
+    </a>
+  </h3>
+  <span><p><code>hex_decode_unchecked</code> AVX2 path reads past <code>src</code></p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2026-09-22">
+    September 22, 2026
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2026-0301.html">
+      RUSTSEC-2026-0301: Vulnerability in stack_collections
+    </a>
+  </h3>
+  <span><p>Double free in <code>StackVec::retain</code> when a predicate or element <code>Drop</code> panics</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2026-09-22">
+    September 22, 2026
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2026-0302.html">
+      RUSTSEC-2026-0302: Unsoundness in stack-graphs
+    </a>
+  </h3>
+  <span><p><code>stack-graphs</code> C API exports are safe <code>extern &quot;C&quot;</code> functions</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2026-09-22">
+    September 22, 2026
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2026-0298.html">
+      RUSTSEC-2026-0298: Vulnerability in unicycle
+    </a>
+  </h3>
+  <span><p>Use-after-free when a future's <code>Drop</code> panics while the container is dropped</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2026-09-22">
+    September 22, 2026
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2026-0300.html">
+      RUSTSEC-2026-0300: Vulnerability in skiplist
+    </a>
+  </h3>
+  <span><p>Use-after-free in <code>clear</code> and <code>retain</code> when an element's <code>Drop</code> panics</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2026-09-21">
+    September 21, 2026
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2026-0291.html">
+      RUSTSEC-2026-0291: Vulnerability in owned-alloc
+    </a>
+  </h3>
+  <span><p>Double free in <code>OwnedAlloc::drop_in_place</code> when the contained value's <code>Drop</code> panics</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2026-09-21">
+    September 21, 2026
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2026-0293.html">
+      RUSTSEC-2026-0293: Vulnerability in ringbuf
+    </a>
+  </h3>
+  <span><p>Double free / use-after-free in <code>Consumer::skip</code> and <code>Consumer::clear</code> when an element's <code>Drop</code> panics</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2026-09-21">
+    September 21, 2026
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2026-0292.html">
+      RUSTSEC-2026-0292: Vulnerability in imbl-sized-chunks
+    </a>
+  </h3>
+  <span><p>Double free / use-after-free in <code>Chunk</code> and <code>InlineArray</code> removal methods when an element's <code>Drop</code> panics</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2026-09-21">
+    September 21, 2026
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2026-0295.html">
+      RUSTSEC-2026-0295: Vulnerability in z3
+    </a>
+  </h3>
+  <span><p>Memory corruption bug on <code>ApplyResult</code> type</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2026-09-14">
+    September 14, 2026
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2026-0284.html">
+      RUSTSEC-2026-0284: Unsoundness in lockfree
+    </a>
+  </h3>
+  <span><p>Double free in <code>Map::into_iter</code> and an uninitialized <code>Arc</code> in <code>SharedIncin::clear</code></p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2026-09-09">
+    September  9, 2026
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2026-0282.html">
+      RUSTSEC-2026-0282: Vulnerability in aligned_box
+    </a>
+  </h3>
+  <span><p>Double free in <code>AlignedBox&lt;[T]&gt;::realloc_with_default</code> when an element's <code>Drop</code> panics</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2026-09-01">
+    September  1, 2026
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2026-0274.html">
+      RUSTSEC-2026-0274: Vulnerability in rtrb
+    </a>
+  </h3>
+  <span><p>Double free / use-after-free in <code>ReadChunk::commit</code> when an element's <code>Drop</code> panics</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2026-08-31">
+    August 31, 2026
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2025-0171.html">
+      RUSTSEC-2025-0171: Unsoundness in mod3d-base
+    </a>
+  </h3>
+  <span><p>soundness issue</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2026-08-31">
+    August 31, 2026
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2026-0272.html">
+      RUSTSEC-2026-0272: Unsoundness in stack_dst
+    </a>
+  </h3>
+  <span><p>Panic-safety unsoundness in <code>Stack::pop</code>, <code>Fifo::pop_front</code> and <code>Value::replace_stable</code> (use-after-free / double-free)</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2026-08-24">
+    August 24, 2026
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2026-0267.html">
+      RUSTSEC-2026-0267: Unsoundness in stable-vec
+    </a>
+  </h3>
+  <span><p>Panic-safety unsoundness in <code>BitVecCore::clear</code> (double-free / use-after-free)</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2026-08-12">
+    August 12, 2026
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2026-0256.html">
+      RUSTSEC-2026-0256: Unsoundness in circular-buffer
+    </a>
+  </h3>
+  <span><p>Panic-safety unsoundness in <code>truncate_back</code>, <code>truncate_front</code>, <code>clear</code>, and <code>extend_from_slice</code> (use-after-free / double-free)</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2026-08-12">
+    August 12, 2026
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2026-0255.html">
+      RUSTSEC-2026-0255: Unsoundness in sized-chunks
+    </a>
+  </h3>
+  <span><p>Panic-safety unsoundness in <code>Chunk</code>, <code>RingBuffer</code>, and <code>InlineArray</code> (use-after-free / double-free)</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2026-08-12">
+    August 12, 2026
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2025-0170.html">
+      RUSTSEC-2025-0170: Unsoundness in hugepage-rs
+    </a>
+  </h3>
+  <span><p><code>hugepage_rs::dealloc</code> may allow invalid memory deallocation from safe code</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2026-08-12">
+    August 12, 2026
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2026-0254.html">
+      RUSTSEC-2026-0254: Unsoundness in sp-sized-chunks
+    </a>
+  </h3>
+  <span><p>Panic-safety unsoundness in <code>Chunk</code> and <code>InlineArray</code> (use-after-free / double-free)</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2026-08-11">
+    August 11, 2026
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2026-0253.html">
+      RUSTSEC-2026-0253: Unsoundness in lru
+    </a>
+  </h3>
+  <span><p>Potential use-after-free due to lack of panic safety in <code>LruCache::pop()</code></p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2026-08-11">
+    August 11, 2026
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2026-0252.html">
+      RUSTSEC-2026-0252: Unsoundness in orx-split-vec
+    </a>
+  </h3>
+  <span><p>Panic-safety unsoundness in <code>SplitVec::extend_from_slice</code> (uninitialized read)</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2026-08-10">
+    August 10, 2026
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2023-0126.html">
+      RUSTSEC-2023-0126: Unsoundness in im
+    </a>
+  </h3>
+  <span><p>Aliasing violation in <code>OrdSet</code> insertion</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2026-08-10">
+    August 10, 2026
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2025-0167.html">
+      RUSTSEC-2025-0167: Unsoundness in bitmaps
+    </a>
+  </h3>
+  <span><p><code>Bitmap::try_from(&amp;[u8])</code> can create invalid values</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2026-08-09">
+    August  9, 2026
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2026-0242.html">
+      RUSTSEC-2026-0242: Vulnerability in dcrypt-api
+    </a>
+  </h3>
+  <span><p>Safe ErrorRegistry APIs can cause undefined behavior</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2026-08-09">
+    August  9, 2026
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2026-0244.html">
+      RUSTSEC-2026-0244: Unsoundness in gettext-rs
+    </a>
+  </h3>
+  <span><p><code>setlocale</code> and <code>TextDomain::init</code> are unsound as they access environment with no synchronization</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2026-08-04">
+    August  4, 2026
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2026-0233.html">
+      RUSTSEC-2026-0233: Vulnerability in rkyv
+    </a>
+  </h3>
+  <span><p>Crafted archives can cause a use-after-free during deserialization</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2026-07-31">
+    July 31, 2026
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2026-0221.html">
+      RUSTSEC-2026-0221: Unsoundness in event-listener
+    </a>
+  </h3>
+  <span><p><code>event-listener</code> allows <code>!Send</code> tags to cross thread boundaries via <code>StackSlot</code></p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2026-07-28">
+    July 28, 2026
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2026-0218.html">
+      RUSTSEC-2026-0218: Unsoundness in enum-map
+    </a>
+  </h3>
+  <span><p><code>Enum</code> trait allows type confusion when manually implemented</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2026-07-03">
+    July  3, 2026
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2026-0198.html">
+      RUSTSEC-2026-0198: Unsoundness in error-stack
+    </a>
+  </h3>
+  <span><p><code>Report::frames_mut</code> allows aliased mutable references</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2026-07-03">
+    July  3, 2026
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2026-0197.html">
+      RUSTSEC-2026-0197: Unsoundness in cgmath
+    </a>
+  </h3>
+  <span><p><code>Matrix{2,3,4}::swap_columns</code> can trigger undefined behavior for identical indices</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2026-06-29">
+    June 29, 2026
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2026-0191.html">
+      RUSTSEC-2026-0191: Unsoundness in solana_rbpf
+    </a>
+  </h3>
+  <span><p><code>EbpfVm::invoke_function</code> performs out-of-bounds pointer arithmetic</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2026-06-29">
+    June 29, 2026
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2026-0190.html">
+      RUSTSEC-2026-0190: Unsoundness in anyhow
+    </a>
+  </h3>
+  <span><p>Unsoundness in <code>Error::downcast_mut()</code></p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2026-06-03">
+    June  3, 2026
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2026-0156.html">
+      RUSTSEC-2026-0156: Vulnerability in metacall
+    </a>
+  </h3>
+  <span><p>Bad-free in <code>MetaCallException::new</code></p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2026-06-03">
+    June  3, 2026
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2026-0157.html">
+      RUSTSEC-2026-0157: Unsoundness in metacall
+    </a>
+  </h3>
+  <span><p>Several memory corruption issues via safe APIs</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2026-06-01">
+    June  1, 2026
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2026-0152.html">
+      RUSTSEC-2026-0152: Vulnerability in oneringbuf
+    </a>
+  </h3>
+  <span><p>Use-after-free</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2026-05-29">
+    May 29, 2026
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2026-0151.html">
+      RUSTSEC-2026-0151: Vulnerability in jxl-grid
+    </a>
+  </h3>
+  <span><p>Out-of-bounds writes due to integer overflow in jxl-grid on 32-bit platforms</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2026-05-20">
+    May 20, 2026
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2025-0162.html">
+      RUSTSEC-2025-0162: Unsoundness in vku
+    </a>
+  </h3>
+  <span><p><code>VMABuffer::set_data</code> may allow out-of-bounds writes from safe code</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2026-05-14">
+    May 14, 2026
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2026-0143.html">
+      RUSTSEC-2026-0143: Unsoundness in oneringbuf
+    </a>
+  </h3>
+  <span><p>Double-free in <code>vmem</code> storage reachable from safe Rust</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2026-05-14">
+    May 14, 2026
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2026-0142.html">
+      RUSTSEC-2026-0142: Unsoundness in mutringbuf
+    </a>
+  </h3>
+  <span><p>Double-free in <code>vmem</code> storage reachable from safe Rust (predecessor of <code>oneringbuf</code>)</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2026-05-13">
+    May 13, 2026
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2026-0128.html">
+      RUSTSEC-2026-0128: Unsoundness in emap
+    </a>
+  </h3>
+  <span><p>Double-free and use-after-free in <code>Keys::next()</code></p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2026-05-13">
+    May 13, 2026
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2026-0133.html">
+      RUSTSEC-2026-0133: Unsoundness in auto_vec
+    </a>
+  </h3>
+  <span><p>Invalid pointer arithmetic in <code>iter()</code> and <code>iter_mut()</code></p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2026-05-13">
+    May 13, 2026
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2026-0129.html">
+      RUSTSEC-2026-0129: Unsoundness in dahl-salso
+    </a>
+  </h3>
+  <span><p>Buffer overflow in <code>Clusterings::from_i32_column_major_order()</code></p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2026-05-13">
+    May 13, 2026
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2026-0127.html">
+      RUSTSEC-2026-0127: Unsoundness in accessor
+    </a>
+  </h3>
+  <span><p>Integer overflow in <code>array::ReadWrite::new()</code> leading to potential memory corruption</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2026-05-13">
+    May 13, 2026
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2026-0131.html">
+      RUSTSEC-2026-0131: Unsoundness in bitchomp
+    </a>
+  </h3>
+  <span><p>Double-free in <code>Chomp::inner()</code></p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2026-05-13">
+    May 13, 2026
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2026-0130.html">
+      RUSTSEC-2026-0130: Unsoundness in caja
+    </a>
+  </h3>
+  <span><p>Out-of-bounds read/write in <code>Index</code> and <code>IndexMut</code> implementations</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2026-05-13">
+    May 13, 2026
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2026-0139.html">
+      RUSTSEC-2026-0139: Unsoundness in metacall
+    </a>
+  </h3>
+  <span><p>Null-pointer dereference and double-free via safe APIs</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2026-05-13">
+    May 13, 2026
+  </time>
+
+  
+  <h3><a class="withdrawn" href="/advisories/RUSTSEC-2026-0132.html">
+      RUSTSEC-2026-0132
+  </a></h3>
+  (withdrawn advisory)
+  
+</li>
+      
+      <li>
+  <time datetime="2026-05-12">
+    May 12, 2026
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2026-0123.html">
+      RUSTSEC-2026-0123: Unsoundness in rustdx
+    </a>
+  </h3>
+  <span><p>Out-of-bounds read in <code>bytes_helper</code> public safe functions</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2026-05-11">
+    May 11, 2026
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2026-0122.html">
+      RUSTSEC-2026-0122: Unsoundness in rkyv
+    </a>
+  </h3>
+  <span><p>Potential use-after-free due to lack of panic safety in <code>InlineVec::clear</code> and <code>SerVec::clear</code></p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2026-04-21">
+    April 21, 2026
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag high">HIGH</span>
+      
+    <a href="/advisories/RUSTSEC-2026-0103.html">
+      RUSTSEC-2026-0103: Vulnerability in thin-vec
+    </a>
+  </h3>
+  <span><p>Use-After-Free and Double Free in IntoIter::drop When Element Drop Panics</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2026-03-10">
+    March 10, 2026
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag critical">CRITICAL</span>
+      
+    <a href="/advisories/RUSTSEC-2026-0038.html">
+      RUSTSEC-2026-0038: Vulnerability in rssn
+    </a>
+  </h3>
+  <span><p>RustSec Advisory</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2026-02-24">
+    February 24, 2026
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2025-0153.html">
+      RUSTSEC-2025-0153: Unsoundness in hexchat
+    </a>
+  </h3>
+  <span><p>hexchat crate is unsound and unmaintained</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2026-02-18">
+    February 18, 2026
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2026-0013.html">
+      RUSTSEC-2026-0013: Vulnerability in pyo3
+    </a>
+  </h3>
+  <span><p>Type confusion when accessing data from sublasses of subclasses of native types with <code>abi3</code> feature targeting Python 3.12 and up</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2026-02-04">
+    February  4, 2026
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2026-0008.html">
+      RUSTSEC-2026-0008: Unsoundness in git2
+    </a>
+  </h3>
+  <span><p>Potential undefined behavior when dereferencing Buf struct</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2026-02-03">
+    February  3, 2026
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2026-0007.html">
+      RUSTSEC-2026-0007: Vulnerability in bytes
+    </a>
+  </h3>
+  <span><p>Integer overflow in <code>BytesMut::reserve</code></p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2026-01-27">
+    January 27, 2026
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2025-0143.html">
+      RUSTSEC-2025-0143: Vulnerability in capnp
+    </a>
+  </h3>
+  <span><p>Unsound APIs of public <code>constant::Reader</code> and <code>StructSchema</code></p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2026-01-09">
+    January  9, 2026
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2025-0142.html">
+      RUSTSEC-2025-0142: Vulnerability in mnl
+    </a>
+  </h3>
+  <span><p>Segmentation fault and invalid memory read in <code>mnl::cb_run</code></p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2026-01-07">
+    January  7, 2026
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2026-0002.html">
+      RUSTSEC-2026-0002: Unsoundness in lru
+    </a>
+  </h3>
+  <span><p><code>IterMut</code> violates Stacked Borrows by invalidating internal pointer</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2026-01-05">
+    January  5, 2026
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2026-0001.html">
+      RUSTSEC-2026-0001: Vulnerability in rkyv
+    </a>
+  </h3>
+  <span><p>Potential Undefined Behaviors in <code>Arc&lt;T&gt;</code>/<code>Rc&lt;T&gt;</code> impls of <code>from_value</code> on OOM</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2026-01-04">
+    January  4, 2026
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2025-0140.html">
+      RUSTSEC-2025-0140: Vulnerability in gix-date
+    </a>
+  </h3>
+  <span><p>Non-utf8 String can be created with <code>TimeBuf::as_str</code></p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2025-12-24">
+    December 24, 2025
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2025-0137.html">
+      RUSTSEC-2025-0137: Vulnerability in ruint
+    </a>
+  </h3>
+  <span><p>Unsoundness of safe <code>reciprocal_mg10</code></p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2025-11-29">
+    November 29, 2025
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2025-0132.html">
+      RUSTSEC-2025-0132: Vulnerability in maxminddb
+    </a>
+  </h3>
+  <span><p><code>Reader::open_mmap</code> unsoundly marks unsafe memmap operation as safe</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2025-11-28">
+    November 28, 2025
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2025-0131.html">
+      RUSTSEC-2025-0131: Unsoundness in rtvm-interpreter
+    </a>
+  </h3>
+  <span><p>Lack of sufficient checks in public API</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2025-11-25">
+    November 25, 2025
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2025-0126.html">
+      RUSTSEC-2025-0126: Vulnerability in nftnl
+    </a>
+  </h3>
+  <span><p>Heap-buffer-overflow in nftnl::Batch::with_page_size (nftnl-rs)</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2025-11-03">
+    November  3, 2025
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2025-0113.html">
+      RUSTSEC-2025-0113: Unsoundness in shaman
+    </a>
+  </h3>
+  <span><p>soundness issue and unmaintained</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2025-10-22">
+    October 22, 2025
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2025-0109.html">
+      RUSTSEC-2025-0109: Unsoundness in binary_vec_io
+    </a>
+  </h3>
+  <span><p>Out-of-bounds memory access in binary_read_to_ref and binary_write_from_ref</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2025-10-21">
+    October 21, 2025
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2025-0106.html">
+      RUSTSEC-2025-0106: Unsoundness in orx-pinned-vec
+    </a>
+  </h3>
+  <span><p>Undefined behavior in index_of_ptr with empty slices</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2025-10-03">
+    October  3, 2025
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2025-0072.html">
+      RUSTSEC-2025-0072: Unsoundness in wrflib
+    </a>
+  </h3>
+  <span><p>soundness issue and unmaintained</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2025-09-11">
+    September 11, 2025
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2025-0064.html">
+      RUSTSEC-2025-0064: Unsoundness in wren_rust
+    </a>
+  </h3>
+  <span><p>soundness issue and unmaintained</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2025-09-11">
+    September 11, 2025
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2025-0063.html">
+      RUSTSEC-2025-0063: Vulnerability in fast-able
+    </a>
+  </h3>
+  <span><p>Possible unsound public API</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2025-09-08">
+    September  8, 2025
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2025-0062.html">
+      RUSTSEC-2025-0062: Vulnerability in toodee
+    </a>
+  </h3>
+  <span><p>Heap Buffer Overflow in the DrainCol Destructor</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2025-09-01">
+    September  1, 2025
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2025-0054.html">
+      RUSTSEC-2025-0054: Vulnerability in array-queue
+    </a>
+  </h3>
+  <span><p>ArrayQueue::push_front is not panic-safe</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2025-09-01">
+    September  1, 2025
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2025-0053.html">
+      RUSTSEC-2025-0053: Vulnerability in arenavec
+    </a>
+  </h3>
+  <span><p>Multiple memory corruption vulnerabilities in safe APIs</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2025-08-15">
+    August 15, 2025
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2025-0050.html">
+      RUSTSEC-2025-0050: Vulnerability in id-map
+    </a>
+  </h3>
+  <span><p>IdMap::from_iter may lead to uninitialized memory being freed on drop</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2025-08-14">
+    August 14, 2025
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2025-0049.html">
+      RUSTSEC-2025-0049: Vulnerability in scratchpad
+    </a>
+  </h3>
+  <span><p>User-defined implementations of the safe trait scratchpad::Tracking can cause heap buffer overflows</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2025-07-17">
+    July 17, 2025
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2025-0045.html">
+      RUSTSEC-2025-0045: Unsoundness in static_cell
+    </a>
+  </h3>
+  <span><p>ConstStaticCell could have been used to pass non-Send values to another thread</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2025-07-14">
+    July 14, 2025
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2025-0044.html">
+      RUSTSEC-2025-0044: Vulnerability in slice-ring-buffer
+    </a>
+  </h3>
+  <span><p>Four unique double-free vulnerabilities triggered via safe APIs</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2025-07-11">
+    July 11, 2025
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2025-0042.html">
+      RUSTSEC-2025-0042: Unsoundness in static-alloc
+    </a>
+  </h3>
+  <span><p>Uninitialized read after allocating MemBump</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2025-06-02">
+    June  2, 2025
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2025-0039.html">
+      RUSTSEC-2025-0039: Unsoundness in anon-vec
+    </a>
+  </h3>
+  <span><p>Lack of sufficient checks in public API</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2025-05-14">
+    May 14, 2025
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2025-0035.html">
+      RUSTSEC-2025-0035: Unsoundness in macroquad
+    </a>
+  </h3>
+  <span><p>Multiple soundness issues in <code>macroquad</code></p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2025-05-08">
+    May  8, 2025
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2025-0034.html">
+      RUSTSEC-2025-0034: Unsoundness in fast_id_map
+    </a>
+  </h3>
+  <span><p>soundness issue and unmaintained</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2025-05-07">
+    May  7, 2025
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2025-0033.html">
+      RUSTSEC-2025-0033: Unsoundness in scanner
+    </a>
+  </h3>
+  <span><p>Public API without sufficient bounds checking</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2025-05-06">
+    May  6, 2025
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2025-0032.html">
+      RUSTSEC-2025-0032: Unsoundness in redox_uefi_std
+    </a>
+  </h3>
+  <span><p>Safe API can cause heap-buffer-overflow</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2025-05-06">
+    May  6, 2025
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2025-0031.html">
+      RUSTSEC-2025-0031: Vulnerability in tanton_engine
+    </a>
+  </h3>
+  <span><p>Unsound public API in unmaintained crate</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2025-05-05">
+    May  5, 2025
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2025-0030.html">
+      RUSTSEC-2025-0030: Unsoundness in totally-safe-transmute
+    </a>
+  </h3>
+  <span><p>totally-safe-transmute allows transmuting any type to any other type in safe Rust</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2025-05-05">
+    May  5, 2025
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2025-0028.html">
+      RUSTSEC-2025-0028: Unsoundness in cve-rs
+    </a>
+  </h3>
+  <span><p>cve-rs introduces memory vulnerabilities in safe Rust</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2025-05-05">
+    May  5, 2025
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2025-0029.html">
+      RUSTSEC-2025-0029: Unsoundness in totally-safe
+    </a>
+  </h3>
+  <span><p>totally-safe introduces memory vulnerabilities in safe Rust</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2025-05-02">
+    May  2, 2025
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag critical">CRITICAL</span>
+      
+    <a href="/advisories/RUSTSEC-2023-0090.html">
+      RUSTSEC-2023-0090: Vulnerability in wasmtime
+    </a>
+  </h3>
+  <span><p>Guest-controlled out-of-bounds read/write on x86_64</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2025-05-02">
+    May  2, 2025
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2022-0100.html">
+      RUSTSEC-2022-0100: Vulnerability in wasmtime
+    </a>
+  </h3>
+  <span><p>Use After Free with <code>externref</code>s in Wasmtime</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2025-05-02">
+    May  2, 2025
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag low">LOW</span>
+      
+    <a href="/advisories/RUSTSEC-2023-0092.html">
+      RUSTSEC-2023-0092: Vulnerability in wasmtime
+    </a>
+  </h3>
+  <span><p>Undefined Behavior in Rust runtime functions</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2025-05-02">
+    May  2, 2025
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2022-0096.html">
+      RUSTSEC-2022-0096: Vulnerability in wasmtime
+    </a>
+  </h3>
+  <span><p>Invalid drop of VMExternRef from partially-initialized instances in the pooling instance allocator</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2025-05-02">
+    May  2, 2025
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2022-0099.html">
+      RUSTSEC-2022-0099: Vulnerability in wasmtime
+    </a>
+  </h3>
+  <span><p>Use after free with <code>externref</code>s and epoch interruption in Wasmtime</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2025-04-10">
+    April 10, 2025
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2025-0024.html">
+      RUSTSEC-2025-0024: Vulnerability in crossbeam-channel
+    </a>
+  </h3>
+  <span><p>crossbeam-channel: double free on Drop</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2025-04-07">
+    April  7, 2025
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2025-0023.html">
+      RUSTSEC-2025-0023: Unsoundness in tokio
+    </a>
+  </h3>
+  <span><p>Broadcast channel calls clone in parallel, but does not require <code>Sync</code></p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2025-04-04">
+    April  4, 2025
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2025-0022.html">
+      RUSTSEC-2025-0022: Vulnerability in openssl
+    </a>
+  </h3>
+  <span><p>Use-After-Free in <code>Md::fetch</code> and <code>Cipher::fetch</code></p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2025-03-30">
+    March 30, 2025
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2025-0019.html">
+      RUSTSEC-2025-0019: Unsoundness in array-init-cursor
+    </a>
+  </h3>
+  <span><p><code>array-init-cursor</code> in version 0.2.0 and below is unsound when used with types that implement <code>Drop</code></p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2025-03-22">
+    March 22, 2025
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2025-0016.html">
+      RUSTSEC-2025-0016: Vulnerability in pared
+    </a>
+  </h3>
+  <span><p>Use after free in <code>Parc</code> and <code>Prc</code> due to missing lifetime constraints</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2025-02-24">
+    February 24, 2025
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2025-0008.html">
+      RUSTSEC-2025-0008: Vulnerability in openh264-sys2
+    </a>
+  </h3>
+  <span><p>Openh264 Decoding Functions Heap Overflow Vulnerability</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2025-02-10">
+    February 10, 2025
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2025-0005.html">
+      RUSTSEC-2025-0005: Vulnerability in grcov
+    </a>
+  </h3>
+  <span><p>Out of bounds write triggered by crafted coverage data</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2024-12-05">
+    December  5, 2024
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2024-0409.html">
+      RUSTSEC-2024-0409: Vulnerability in pyo3
+    </a>
+  </h3>
+  <span><p>Build corruption when using <code>PYO3_CONFIG_FILE</code> environment variable</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2024-10-14">
+    October 14, 2024
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2024-0378.html">
+      RUSTSEC-2024-0378: Vulnerability in pyo3
+    </a>
+  </h3>
+  <span><p>Risk of use-after-free in <code>borrowed</code> reads from Python weak references</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2024-10-09">
+    October  9, 2024
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2024-0377.html">
+      RUSTSEC-2024-0377: Vulnerability in dbn
+    </a>
+  </h3>
+  <span><p>Heap Buffer overflow using c_chars_to_str function</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2024-09-22">
+    September 22, 2024
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2024-0374.html">
+      RUSTSEC-2024-0374: Vulnerability in ouch
+    </a>
+  </h3>
+  <span><p>Segmentation fault due to use of uninitialized memory</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2024-07-08">
+    July  8, 2024
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2024-0347.html">
+      RUSTSEC-2024-0347: Vulnerability in zerovec
+    </a>
+  </h3>
+  <span><p>Incorrect usage of <code>#[repr(packed)]</code></p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2024-07-08">
+    July  8, 2024
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2024-0346.html">
+      RUSTSEC-2024-0346: Vulnerability in zerovec-derive
+    </a>
+  </h3>
+  <span><p>Incorrect usage of <code>#[repr(packed)]</code></p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2024-03-06">
+    March  6, 2024
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2024-0021.html">
+      RUSTSEC-2024-0021: Vulnerability in eyre
+    </a>
+  </h3>
+  <span><p>Parts of Report are dropped as the wrong type during downcast</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2024-03-05">
+    March  5, 2024
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2024-0020.html">
+      RUSTSEC-2024-0020: Vulnerability in whoami
+    </a>
+  </h3>
+  <span><p>Stack buffer overflow with whoami on several Unix platforms</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2024-03-01">
+    March  1, 2024
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2024-0018.html">
+      RUSTSEC-2024-0018: Vulnerability in crayon
+    </a>
+  </h3>
+  <span><p>ObjectPool creates uninitialized memory when freeing objects</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2024-02-28">
+    February 28, 2024
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2024-0017.html">
+      RUSTSEC-2024-0017: Unsoundness in cassandra-cpp
+    </a>
+  </h3>
+  <span><p>Non-idiomatic use of iterators leads to use after free</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2024-02-19">
+    February 19, 2024
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2024-0016.html">
+      RUSTSEC-2024-0016: Vulnerability in libdav1d-sys
+    </a>
+  </h3>
+  <span><p>dav1d AV1 decoder integer overflow</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2024-02-17">
+    February 17, 2024
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2023-0080.html">
+      RUSTSEC-2023-0080: Vulnerability in transpose
+    </a>
+  </h3>
+  <span><p>Buffer overflow due to integer overflow in <code>transpose</code></p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2024-02-09">
+    February  9, 2024
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag high">HIGH</span>
+      
+    <a href="/advisories/RUSTSEC-2024-0013.html">
+      RUSTSEC-2024-0013: Vulnerability in libgit2-sys
+    </a>
+  </h3>
+  <span><p>Memory corruption, denial of service, and arbitrary code execution in libgit2</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2024-01-13">
+    January 13, 2024
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2023-0078.html">
+      RUSTSEC-2023-0078: Unsoundness in tracing
+    </a>
+  </h3>
+  <span><p>Potential stack use-after-free in <code>Instrumented::into_inner</code></p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2024-01-13">
+    January 13, 2024
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag medium">MEDIUM</span>
+      
+    <a href="/advisories/RUSTSEC-2024-0002.html">
+      RUSTSEC-2024-0002: Unsoundness in vmm-sys-util
+    </a>
+  </h3>
+  <span><p><code>serde</code> deserialization for <code>FamStructWrapper</code> lacks bound checks that could potentially lead to out-of-bounds memory access</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2023-11-28">
+    November 28, 2023
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2023-0072.html">
+      RUSTSEC-2023-0072: Unsoundness in openssl
+    </a>
+  </h3>
+  <span><p><code>openssl</code> <code>X509StoreRef::objects</code> is unsound</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2023-09-13">
+    September 13, 2023
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2023-0061.html">
+      RUSTSEC-2023-0061: Vulnerability in libwebp-sys
+    </a>
+  </h3>
+  <span><p>libwebp: OOB write in BuildHuffmanTable</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2023-09-13">
+    September 13, 2023
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2023-0060.html">
+      RUSTSEC-2023-0060: Vulnerability in libwebp-sys2
+    </a>
+  </h3>
+  <span><p>libwebp: OOB write in BuildHuffmanTable</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2023-08-24">
+    August 24, 2023
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2023-0054.html">
+      RUSTSEC-2023-0054: Vulnerability in mail-internals
+    </a>
+  </h3>
+  <span><p>Use-after-free in <code>vec_insert_bytes</code></p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2023-06-21">
+    June 21, 2023
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2023-0045.html">
+      RUSTSEC-2023-0045: Unsoundness in memoffset
+    </a>
+  </h3>
+  <span><p>memoffset allows reading uninitialized memory</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2023-04-13">
+    April 13, 2023
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2023-0033.html">
+      RUSTSEC-2023-0033: Unsoundness in borsh
+    </a>
+  </h3>
+  <span><p>Parsing borsh messages with ZST which are not-copy/clone is unsound</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2023-04-06">
+    April  6, 2023
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2023-0032.html">
+      RUSTSEC-2023-0032: Unsoundness in ntru
+    </a>
+  </h3>
+  <span><p>Unsound FFI: Wrong API usage causes write past allocated area</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2023-03-22">
+    March 22, 2023
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2022-0092.html">
+      RUSTSEC-2022-0092: Unsoundness in rmp-serde
+    </a>
+  </h3>
+  <span><p><code>rmp-serde</code> <code>Raw</code> and <code>RawRef</code> unsound</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2023-03-19">
+    March 19, 2023
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2023-0021.html">
+      RUSTSEC-2023-0021: Vulnerability in stb_image
+    </a>
+  </h3>
+  <span><p>NULL pointer dereference in <code>stb_image</code></p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2023-03-12">
+    March 12, 2023
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2021-0152.html">
+      RUSTSEC-2021-0152: Unsoundness in out-reference
+    </a>
+  </h3>
+  <span><p><code>out_reference::Out::from_raw</code> should be <code>unsafe</code></p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2023-03-04">
+    March  4, 2023
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2023-0017.html">
+      RUSTSEC-2023-0017: Unsoundness in maligned
+    </a>
+  </h3>
+  <span><p><code>maligned::align_first</code> causes incorrect deallocation</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2023-02-25">
+    February 25, 2023
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2023-0015.html">
+      RUSTSEC-2023-0015: Unsoundness in ascii
+    </a>
+  </h3>
+  <span><p>Ascii allows out-of-bounds array indexing in safe code</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2023-02-09">
+    February  9, 2023
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag medium">MEDIUM</span>
+      
+    <a href="/advisories/RUSTSEC-2020-0167.html">
+      RUSTSEC-2020-0167: Vulnerability in pnet_packet
+    </a>
+  </h3>
+  <span><p><code>pnet_packet</code> buffer overrun in <code>set_payload</code> setters</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2023-01-15">
+    January 15, 2023
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2022-0079.html">
+      RUSTSEC-2022-0079: Vulnerability in elf_rs
+    </a>
+  </h3>
+  <span><p>ELF header parsing library doesn't check for valid offset</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2023-01-14">
+    January 14, 2023
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2022-0078.html">
+      RUSTSEC-2022-0078: Unsoundness in bumpalo
+    </a>
+  </h3>
+  <span><p>Use-after-free due to a lifetime error in <code>Vec::into_iter()</code></p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2023-01-12">
+    January 12, 2023
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag high">HIGH</span>
+      
+    <a href="/advisories/RUSTSEC-2022-0076.html">
+      RUSTSEC-2022-0076: Vulnerability in wasmtime
+    </a>
+  </h3>
+  <span><p>Bug in Wasmtime implementation of pooling instance allocator</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2022-12-07">
+    December  7, 2022
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2022-0070.html">
+      RUSTSEC-2022-0070: Unsoundness in secp256k1
+    </a>
+  </h3>
+  <span><p>Unsound API in <code>secp256k1</code> allows use-after-free and invalid deallocation from safe code</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2022-10-30">
+    October 30, 2022
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag high">HIGH</span>
+      
+    <a href="/advisories/RUSTSEC-2022-0063.html">
+      RUSTSEC-2022-0063: Vulnerability in linked_list_allocator
+    </a>
+  </h3>
+  <span><p>Multiple vulnerabilities resulting in out-of-bounds writes</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2022-08-31">
+    August 31, 2022
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2020-0165.html">
+      RUSTSEC-2020-0165: Unsoundness in mozjpeg
+    </a>
+  </h3>
+  <span><p>mozjpeg DecompressScanlines::read_scanlines is Unsound</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2022-08-31">
+    August 31, 2022
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2020-0164.html">
+      RUSTSEC-2020-0164: Unsoundness in cell-project
+    </a>
+  </h3>
+  <span><p><code>cell-project</code> used incorrect variance when projecting through <code>&amp;Cell&lt;T&gt;</code></p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2022-08-27">
+    August 27, 2022
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2022-0052.html">
+      RUSTSEC-2022-0052: Unsoundness in os_socketaddr
+    </a>
+  </h3>
+  <span><p><code>os_socketaddr</code> invalidly assumes the memory layout of std::net::SocketAddr</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2022-08-26">
+    August 26, 2022
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag critical">CRITICAL</span>
+      
+    <a href="/advisories/RUSTSEC-2022-0051.html">
+      RUSTSEC-2022-0051: Vulnerability in lz4-sys
+    </a>
+  </h3>
+  <span><p>Memory corruption in liblz4</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2022-08-11">
+    August 11, 2022
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2022-0046.html">
+      RUSTSEC-2022-0046: Vulnerability in rocksdb
+    </a>
+  </h3>
+  <span><p>Out-of-bounds read when opening multiple column families with TTL</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2022-08-04">
+    August  4, 2022
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2022-0041.html">
+      RUSTSEC-2022-0041: Unsoundness in crossbeam-utils
+    </a>
+  </h3>
+  <span><p>Unsoundness of AtomicCell&lt;<em>64&gt; arithmetics on 32-bit targets that support Atomic</em>64</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2022-08-02">
+    August  2, 2022
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2022-0040.html">
+      RUSTSEC-2022-0040: Vulnerability in owning_ref
+    </a>
+  </h3>
+  <span><p>Multiple soundness issues in <code>owning_ref</code></p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2022-07-25">
+    July 25, 2022
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2022-0034.html">
+      RUSTSEC-2022-0034: Unsoundness in pkcs11
+    </a>
+  </h3>
+  <span><p>Safety issues in <code>pkcs11</code></p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2022-06-08">
+    June  8, 2022
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2022-0029.html">
+      RUSTSEC-2022-0029: Vulnerability in crossbeam
+    </a>
+  </h3>
+  <span><p><code>MsQueue</code> <code>push</code>/<code>pop</code> use the wrong orderings</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2022-05-23">
+    May 23, 2022
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2022-0028.html">
+      RUSTSEC-2022-0028: Vulnerability in neon
+    </a>
+  </h3>
+  <span><p>Use after free in Neon external buffers</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2022-04-27">
+    April 27, 2022
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2022-0017.html">
+      RUSTSEC-2022-0017: Unsoundness in array-macro
+    </a>
+  </h3>
+  <span><p><code>array!</code> macro is unsound when its length is impure constant</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2022-03-31">
+    March 31, 2022
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2022-0016.html">
+      RUSTSEC-2022-0016: Vulnerability in wasmtime
+    </a>
+  </h3>
+  <span><p>Use after free with <code>externref</code>s and epoch interruption in Wasmtime</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2022-03-04">
+    March  4, 2022
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2022-0012.html">
+      RUSTSEC-2022-0012: Vulnerability in arrow2
+    </a>
+  </h3>
+  <span><p>Arrow2 allows double free in <code>safe</code> code</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2022-02-18">
+    February 18, 2022
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2022-0010.html">
+      RUSTSEC-2022-0010: Unsoundness in enum-map
+    </a>
+  </h3>
+  <span><p>enum_map macro can cause UB when <code>Enum</code> trait is incorrectly implemented</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2022-02-04">
+    February  4, 2022
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2022-0008.html">
+      RUSTSEC-2022-0008: Unsoundness in windows
+    </a>
+  </h3>
+  <span><p>Delegate functions are missing <code>Send</code> bound</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2022-01-24">
+    January 24, 2022
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2022-0006.html">
+      RUSTSEC-2022-0006: Vulnerability in thread_local
+    </a>
+  </h3>
+  <span><p>Data race in <code>Iter</code> and <code>IterMut</code></p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2022-01-21">
+    January 21, 2022
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2020-0161.html">
+      RUSTSEC-2020-0161: Unsoundness in array-macro
+    </a>
+  </h3>
+  <span><p><code>array!</code> macro is unsound in presence of traits that implement methods it calls internally</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2022-01-13">
+    January 13, 2022
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2022-0002.html">
+      RUSTSEC-2022-0002: Vulnerability in dashmap
+    </a>
+  </h3>
+  <span><p>Unsoundness in <code>dashmap</code> references</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-12-21">
+    December 21, 2021
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2021-0131.html">
+      RUSTSEC-2021-0131: Vulnerability in brotli-sys
+    </a>
+  </h3>
+  <span><p>Integer overflow in the bundled Brotli C library</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-12-21">
+    December 21, 2021
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2021-0132.html">
+      RUSTSEC-2021-0132: Vulnerability in compu-brotli-sys
+    </a>
+  </h3>
+  <span><p>Integer overflow in the bundled Brotli C library</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-12-21">
+    December 21, 2021
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2021-0130.html">
+      RUSTSEC-2021-0130: Vulnerability in lru
+    </a>
+  </h3>
+  <span><p>Use after free in lru crate</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-12-09">
+    December  9, 2021
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2021-0128.html">
+      RUSTSEC-2021-0128: Vulnerability in rusqlite
+    </a>
+  </h3>
+  <span><p>Incorrect Lifetime Bounds on Closures in <code>rusqlite</code></p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-11-17">
+    November 17, 2021
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2021-0124.html">
+      RUSTSEC-2021-0124: Vulnerability in tokio
+    </a>
+  </h3>
+  <span><p>Data race when sending and receiving after closing a <code>oneshot</code> channel</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-10-18">
+    October 18, 2021
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2020-0159.html">
+      RUSTSEC-2020-0159: Vulnerability in chrono
+    </a>
+  </h3>
+  <span><p>Potential segfault in <code>localtime_r</code> invocations</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-09-30">
+    September 30, 2021
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2021-0119.html">
+      RUSTSEC-2021-0119: Vulnerability in nix
+    </a>
+  </h3>
+  <span><p>Out-of-bounds write in nix::unistd::getgrouplist</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-09-18">
+    September 18, 2021
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2021-0111.html">
+      RUSTSEC-2021-0111: Vulnerability in tremor-script
+    </a>
+  </h3>
+  <span><p>Memory Safety Issue when using <code>patch</code> or <code>merge</code> on <code>state</code> and assign the result back to <code>state</code></p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-09-18">
+    September 18, 2021
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2021-0113.html">
+      RUSTSEC-2021-0113: Vulnerability in metrics-util
+    </a>
+  </h3>
+  <span><p>AtomicBucket<!-- raw HTML omitted --> unconditionally implements Send/Sync</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-09-17">
+    September 17, 2021
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag medium">MEDIUM</span>
+      
+    <a href="/advisories/RUSTSEC-2021-0110.html">
+      RUSTSEC-2021-0110: Vulnerability in wasmtime
+    </a>
+  </h3>
+  <span><p>Multiple Vulnerabilities in Wasmtime</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-09-10">
+    September 10, 2021
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag high">HIGH</span>
+      
+    <a href="/advisories/RUSTSEC-2020-0157.html">
+      RUSTSEC-2020-0157: Vulnerability in vm-memory
+    </a>
+  </h3>
+  <span><p>Improper Synchronization and Race Condition in vm-memory</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-08-21">
+    August 21, 2021
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2021-0082.html">
+      RUSTSEC-2021-0082: Unsoundness in vec-const
+    </a>
+  </h3>
+  <span><p>vec-const attempts to construct a Vec from a pointer to a const slice</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-08-21">
+    August 21, 2021
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag critical">CRITICAL</span>
+      
+    <a href="/advisories/RUSTSEC-2021-0093.html">
+      RUSTSEC-2021-0093: Vulnerability in crossbeam-deque
+    </a>
+  </h3>
+  <span><p>Data race in crossbeam-deque</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-08-21">
+    August 21, 2021
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2021-0083.html">
+      RUSTSEC-2021-0083: Vulnerability in derive-com-impl
+    </a>
+  </h3>
+  <span><p>QueryInterface should call AddRef before returning pointer</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-08-21">
+    August 21, 2021
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2021-0095.html">
+      RUSTSEC-2021-0095: Unsoundness in mopa
+    </a>
+  </h3>
+  <span><p><code>mopa</code> is technically unsound</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-08-21">
+    August 21, 2021
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2021-0089.html">
+      RUSTSEC-2021-0089: Vulnerability in raw-cpuid
+    </a>
+  </h3>
+  <span><p>Optional <code>Deserialize</code> implementations lacking validation</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-07-08">
+    July  8, 2021
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2021-0072.html">
+      RUSTSEC-2021-0072: Vulnerability in tokio
+    </a>
+  </h3>
+  <span><p>Task dropped in wrong thread when aborting <code>LocalSet</code> task</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-07-06">
+    July  6, 2021
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/CVE-2021-31162.html">
+      CVE-2021-31162: Vulnerability in std
+    </a>
+  </h3>
+  <span><p>Double free in Vec::from_iter specialization when drop panics</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-06-06">
+    June  6, 2021
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2021-0070.html">
+      RUSTSEC-2021-0070: Vulnerability in nalgebra
+    </a>
+  </h3>
+  <span><p>VecStorage Deserialize Allows Violation of Length Invariant</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-05-22">
+    May 22, 2021
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag high">HIGH</span>
+      
+    <a href="/advisories/RUSTSEC-2021-0067.html">
+      RUSTSEC-2021-0067: Vulnerability in cranelift-codegen
+    </a>
+  </h3>
+  <span><p>Memory access due to code generation flaw in Cranelift module</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-04-15">
+    April 15, 2021
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2021-0053.html">
+      RUSTSEC-2021-0053: Vulnerability in algorithmica
+    </a>
+  </h3>
+  <span><p>'merge_sort::merge()' crashes with double-free for <code>T: Drop</code></p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-04-13">
+    April 13, 2021
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/CVE-2020-36317.html">
+      CVE-2020-36317: Vulnerability in std
+    </a>
+  </h3>
+  <span><p>String::retain allows safely creating invalid strings when abusing panic</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-04-13">
+    April 13, 2021
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/CVE-2021-28876.html">
+      CVE-2021-28876: Vulnerability in std
+    </a>
+  </h3>
+  <span><p>Panic safety issue in Zip specialization</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-04-13">
+    April 13, 2021
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/CVE-2020-36318.html">
+      CVE-2020-36318: Vulnerability in std
+    </a>
+  </h3>
+  <span><p>VecDeque::make_contiguous may duplicate the contained elements</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-04-13">
+    April 13, 2021
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/CVE-2021-28878.html">
+      CVE-2021-28878: Vulnerability in std
+    </a>
+  </h3>
+  <span><p>Zip may call __iterator_get_unchecked twice with the same index</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-04-13">
+    April 13, 2021
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/CVE-2021-28877.html">
+      CVE-2021-28877: Vulnerability in std
+    </a>
+  </h3>
+  <span><p>TrustedRandomAccess specialization composes incorrectly for nested iter::Zips</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-04-13">
+    April 13, 2021
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/CVE-2015-20001.html">
+      CVE-2015-20001: Vulnerability in std
+    </a>
+  </h3>
+  <span><p>Panic safety violation in BinaryHeap</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-04-13">
+    April 13, 2021
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/CVE-2021-28875.html">
+      CVE-2021-28875: Vulnerability in std
+    </a>
+  </h3>
+  <span><p>Logic bug in Read can cause buffer overflow in read_to_end()</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-04-13">
+    April 13, 2021
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/CVE-2021-28879.html">
+      CVE-2021-28879: Vulnerability in std
+    </a>
+  </h3>
+  <span><p>Zip can cause buffer overflow when a consumed Zip iterator is used again</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-04-02">
+    April  2, 2021
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2021-0052.html">
+      RUSTSEC-2021-0052: Vulnerability in id-map
+    </a>
+  </h3>
+  <span><p>Multiple functions can cause double-frees</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-03-30">
+    March 30, 2021
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag critical">CRITICAL</span>
+      
+    <a href="/advisories/RUSTSEC-2021-0049.html">
+      RUSTSEC-2021-0049: Vulnerability in through
+    </a>
+  </h3>
+  <span><p><code>through</code> and <code>through_and</code> causes a double free if the map function panics</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-03-30">
+    March 30, 2021
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag medium">MEDIUM</span>
+      
+    <a href="/advisories/RUSTSEC-2020-0150.html">
+      RUSTSEC-2020-0150: Vulnerability in disrustor
+    </a>
+  </h3>
+  <span><p>RingBuffer can create multiple mutable references and cause data races</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-03-30">
+    March 30, 2021
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag high">HIGH</span>
+      
+    <a href="/advisories/RUSTSEC-2021-0048.html">
+      RUSTSEC-2021-0048: Vulnerability in stackvector
+    </a>
+  </h3>
+  <span><p>StackVec::extend can write out of bounds when size_hint is incorrect</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-03-30">
+    March 30, 2021
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag medium">MEDIUM</span>
+      
+    <a href="/advisories/RUSTSEC-2020-0152.html">
+      RUSTSEC-2020-0152: Vulnerability in max7301
+    </a>
+  </h3>
+  <span><p>ImmediateIO and TransactionalIO can cause data races</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-03-30">
+    March 30, 2021
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag medium">MEDIUM</span>
+      
+    <a href="/advisories/RUSTSEC-2020-0151.html">
+      RUSTSEC-2020-0151: Vulnerability in generator
+    </a>
+  </h3>
+  <span><p>Generators can cause data races if non-Send types are used in their generator functions</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-03-30">
+    March 30, 2021
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag high">HIGH</span>
+      
+    <a href="/advisories/RUSTSEC-2021-0047.html">
+      RUSTSEC-2021-0047: Vulnerability in slice-deque
+    </a>
+  </h3>
+  <span><p>SliceDeque::drain_filter can double drop an element if the predicate panics</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-03-30">
+    March 30, 2021
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag medium">MEDIUM</span>
+      
+    <a href="/advisories/RUSTSEC-2020-0149.html">
+      RUSTSEC-2020-0149: Vulnerability in appendix
+    </a>
+  </h3>
+  <span><p>Data race and memory safety issue in <code>Index</code></p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-03-29">
+    March 29, 2021
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag critical">CRITICAL</span>
+      
+    <a href="/advisories/RUSTSEC-2021-0045.html">
+      RUSTSEC-2021-0045: Vulnerability in adtensor
+    </a>
+  </h3>
+  <span><p>FromIterator implementation for Vector/Matrix can drop uninitialized memory</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-03-29">
+    March 29, 2021
+  </time>
+
+  
+  <h3><a class="withdrawn" href="/advisories/RUSTSEC-2021-0046.html">
+      RUSTSEC-2021-0046
+  </a></h3>
+  (withdrawn advisory)
+  
+</li>
+      
+      <li>
+  <time datetime="2021-03-26">
+    March 26, 2021
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag medium">MEDIUM</span>
+      
+    <a href="/advisories/RUSTSEC-2020-0148.html">
+      RUSTSEC-2020-0148: Vulnerability in cgc
+    </a>
+  </h3>
+  <span><p>Multiple soundness issues in <code>Ptr</code></p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-03-26">
+    March 26, 2021
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag high">HIGH</span>
+      
+    <a href="/advisories/RUSTSEC-2021-0044.html">
+      RUSTSEC-2021-0044: Unsoundness in rocket
+    </a>
+  </h3>
+  <span><p>Use after free possible in <code>uri::Formatter</code> on panic</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-03-26">
+    March 26, 2021
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag high">HIGH</span>
+      
+    <a href="/advisories/RUSTSEC-2021-0042.html">
+      RUSTSEC-2021-0042: Vulnerability in insert_many
+    </a>
+  </h3>
+  <span><p>insert_many can drop elements twice on panic</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-03-07">
+    March  7, 2021
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag high">HIGH</span>
+      
+    <a href="/advisories/RUSTSEC-2021-0039.html">
+      RUSTSEC-2021-0039: Vulnerability in endian_trait
+    </a>
+  </h3>
+  <span><p>panic in user-provided <code>Endian</code> impl triggers double drop of T</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-03-07">
+    March  7, 2021
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag high">HIGH</span>
+      
+    <a href="/advisories/RUSTSEC-2021-0040.html">
+      RUSTSEC-2021-0040: Vulnerability in arenavec
+    </a>
+  </h3>
+  <span><p>panic safety: double drop or uninitialized drop of T upon panic</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-03-05">
+    March  5, 2021
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag critical">CRITICAL</span>
+      
+    <a href="/advisories/RUSTSEC-2021-0037.html">
+      RUSTSEC-2021-0037: Vulnerability in diesel
+    </a>
+  </h3>
+  <span><p>Fix a use-after-free bug in diesels Sqlite backend</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-03-03">
+    March  3, 2021
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag critical">CRITICAL</span>
+      
+    <a href="/advisories/RUSTSEC-2021-0033.html">
+      RUSTSEC-2021-0033: Vulnerability in stack_dst
+    </a>
+  </h3>
+  <span><p>push_cloned can drop uninitialized memory or double free on panic</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-03-02">
+    March  2, 2021
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag critical">CRITICAL</span>
+      
+    <a href="/advisories/RUSTSEC-2021-0030.html">
+      RUSTSEC-2021-0030: Vulnerability in scratchpad
+    </a>
+  </h3>
+  <span><p>move_elements can double-free objects on panic</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-03-02">
+    March  2, 2021
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag critical">CRITICAL</span>
+      
+    <a href="/advisories/RUSTSEC-2021-0031.html">
+      RUSTSEC-2021-0031: Vulnerability in nano_arena
+    </a>
+  </h3>
+  <span><p>split_at allows obtaining multiple mutable references to the same data</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-03-02">
+    March  2, 2021
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag critical">CRITICAL</span>
+      
+    <a href="/advisories/RUSTSEC-2021-0032.html">
+      RUSTSEC-2021-0032: Vulnerability in byte_struct
+    </a>
+  </h3>
+  <span><p>Deserializing an array can drop uninitialized memory on panic</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-03-01">
+    March  1, 2021
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag high">HIGH</span>
+      
+    <a href="/advisories/RUSTSEC-2020-0146.html">
+      RUSTSEC-2020-0146: Vulnerability in generic-array
+    </a>
+  </h3>
+  <span><p>arr! macro erases lifetimes</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-03-01">
+    March  1, 2021
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag critical">CRITICAL</span>
+      
+    <a href="/advisories/RUSTSEC-2021-0027.html">
+      RUSTSEC-2021-0027: Vulnerability in bam
+    </a>
+  </h3>
+  <span><p>Loading a bgzip block can write out of bounds if size overflows.</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-03-01">
+    March  1, 2021
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2021-0028.html">
+      RUSTSEC-2021-0028: Vulnerability in toodee
+    </a>
+  </h3>
+  <span><p>Multiple memory safety issues in insert_row</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-02-27">
+    February 27, 2021
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag high">HIGH</span>
+      
+    <a href="/advisories/RUSTSEC-2020-0145.html">
+      RUSTSEC-2020-0145: Unsoundness in heapless
+    </a>
+  </h3>
+  <span><p>Use-after-free when cloning a partially consumed <code>Vec</code> iterator</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-02-15">
+    February 15, 2021
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag critical">CRITICAL</span>
+      
+    <a href="/advisories/RUSTSEC-2021-0022.html">
+      RUSTSEC-2021-0022: Vulnerability in yottadb
+    </a>
+  </h3>
+  <span><p>Use-after-free in <code>subscript_next</code> and <code>subscript_prev</code> wrappers</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-02-04">
+    February  4, 2021
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag high">HIGH</span>
+      
+    <a href="/advisories/RUSTSEC-2020-0143.html">
+      RUSTSEC-2020-0143: Vulnerability in multiqueue
+    </a>
+  </h3>
+  <span><p>Queues allow non-Send types to be sent to other threads, allowing data races</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-02-04">
+    February  4, 2021
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2021-0019.html">
+      RUSTSEC-2021-0019: Vulnerability in xcb
+    </a>
+  </h3>
+  <span><p>Multiple soundness issues</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-02-04">
+    February  4, 2021
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag medium">MEDIUM</span>
+      
+    <a href="/advisories/RUSTSEC-2021-0018.html">
+      RUSTSEC-2021-0018: Vulnerability in qwutils
+    </a>
+  </h3>
+  <span><p>insert_slice_clone can double drop if Clone panics.</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-02-02">
+    February  2, 2021
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag high">HIGH</span>
+      
+    <a href="/advisories/RUSTSEC-2020-0142.html">
+      RUSTSEC-2020-0142: Vulnerability in syncpool
+    </a>
+  </h3>
+  <span><p>Send bound needed on T (for Send impl of <code>Bucket2</code>)</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-02-01">
+    February  1, 2021
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag high">HIGH</span>
+      
+    <a href="/advisories/RUSTSEC-2020-0141.html">
+      RUSTSEC-2020-0141: Vulnerability in noise_search
+    </a>
+  </h3>
+  <span><p>MvccRwLock allows data races &amp; aliasing violations</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-01-30">
+    January 30, 2021
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag high">HIGH</span>
+      
+    <a href="/advisories/RUSTSEC-2020-0137.html">
+      RUSTSEC-2020-0137: Vulnerability in lever
+    </a>
+  </h3>
+  <span><p>AtomicBox<!-- raw HTML omitted --> lacks bound on its Send and Sync traits allowing data races</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-01-30">
+    January 30, 2021
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag high">HIGH</span>
+      
+    <a href="/advisories/RUSTSEC-2020-0131.html">
+      RUSTSEC-2020-0131: Vulnerability in rcu_cell
+    </a>
+  </h3>
+  <span><p>Send/Sync bound needed on T  for Send/Sync impl of RcuCell<!-- raw HTML omitted --></p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-01-30">
+    January 30, 2021
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag high">HIGH</span>
+      
+    <a href="/advisories/RUSTSEC-2020-0136.html">
+      RUSTSEC-2020-0136: Vulnerability in toolshed
+    </a>
+  </h3>
+  <span><p>CopyCell lacks bounds on its Send trait allowing for data races</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-01-30">
+    January 30, 2021
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag high">HIGH</span>
+      
+    <a href="/advisories/RUSTSEC-2020-0124.html">
+      RUSTSEC-2020-0124: Vulnerability in async-coap
+    </a>
+  </h3>
+  <span><p>ArcGuard's Send and Sync should have bounds on RC</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-01-30">
+    January 30, 2021
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag high">HIGH</span>
+      
+    <a href="/advisories/RUSTSEC-2020-0125.html">
+      RUSTSEC-2020-0125: Vulnerability in convec
+    </a>
+  </h3>
+  <span><p>convec::ConVec<!-- raw HTML omitted --> unconditionally implements Send/Sync</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-01-30">
+    January 30, 2021
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag high">HIGH</span>
+      
+    <a href="/advisories/RUSTSEC-2020-0130.html">
+      RUSTSEC-2020-0130: Vulnerability in bunch
+    </a>
+  </h3>
+  <span><p>Bunch<!-- raw HTML omitted --> unconditionally implements Send/Sync</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-01-30">
+    January 30, 2021
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag critical">CRITICAL</span>
+      
+    <a href="/advisories/RUSTSEC-2020-0132.html">
+      RUSTSEC-2020-0132: Vulnerability in array-tools
+    </a>
+  </h3>
+  <span><p><code>FixedCapacityDequeLike::clone()</code> can cause dropping uninitialized memory</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-01-30">
+    January 30, 2021
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag critical">CRITICAL</span>
+      
+    <a href="/advisories/RUSTSEC-2021-0015.html">
+      RUSTSEC-2021-0015: Vulnerability in calamine
+    </a>
+  </h3>
+  <span><p><code>Sectors::get</code> accesses unclaimed/uninitialized memory</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-01-30">
+    January 30, 2021
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag high">HIGH</span>
+      
+    <a href="/advisories/RUSTSEC-2020-0138.html">
+      RUSTSEC-2020-0138: Vulnerability in lexer
+    </a>
+  </h3>
+  <span><p>ReaderResult should be bounded by Sync</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-01-30">
+    January 30, 2021
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag high">HIGH</span>
+      
+    <a href="/advisories/RUSTSEC-2020-0127.html">
+      RUSTSEC-2020-0127: Vulnerability in v9
+    </a>
+  </h3>
+  <span><p>SyncRef's clone() and debug() allow data races</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-01-30">
+    January 30, 2021
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag high">HIGH</span>
+      
+    <a href="/advisories/RUSTSEC-2020-0128.html">
+      RUSTSEC-2020-0128: Vulnerability in cache
+    </a>
+  </h3>
+  <span><p>Cache<!-- raw HTML omitted -->: Send/Sync impls needs trait bounds on <code>K</code></p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-01-30">
+    January 30, 2021
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag high">HIGH</span>
+      
+    <a href="/advisories/RUSTSEC-2020-0133.html">
+      RUSTSEC-2020-0133: Vulnerability in scottqueue
+    </a>
+  </h3>
+  <span><p>Queue<!-- raw HTML omitted --> should have a Send bound on its Send/Sync traits</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-01-30">
+    January 30, 2021
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag high">HIGH</span>
+      
+    <a href="/advisories/RUSTSEC-2020-0135.html">
+      RUSTSEC-2020-0135: Vulnerability in slock
+    </a>
+  </h3>
+  <span><p>Slock<!-- raw HTML omitted --> allows sending non-Send types across thread boundaries</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-01-30">
+    January 30, 2021
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag high">HIGH</span>
+      
+    <a href="/advisories/RUSTSEC-2020-0139.html">
+      RUSTSEC-2020-0139: Vulnerability in dces
+    </a>
+  </h3>
+  <span><p>dces' World type can cause data races</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-01-30">
+    January 30, 2021
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag high">HIGH</span>
+      
+    <a href="/advisories/RUSTSEC-2020-0129.html">
+      RUSTSEC-2020-0129: Vulnerability in kekbit
+    </a>
+  </h3>
+  <span><p>ShmWriter allows sending non-Send type across threads</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-01-30">
+    January 30, 2021
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag high">HIGH</span>
+      
+    <a href="/advisories/RUSTSEC-2020-0126.html">
+      RUSTSEC-2020-0126: Vulnerability in signal-simple
+    </a>
+  </h3>
+  <span><p>SyncChannel<!-- raw HTML omitted --> can move 'T: !Send' to other threads</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-01-30">
+    January 30, 2021
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag high">HIGH</span>
+      
+    <a href="/advisories/RUSTSEC-2020-0134.html">
+      RUSTSEC-2020-0134: Vulnerability in parc
+    </a>
+  </h3>
+  <span><p><code>LockWeak&lt;T&gt;</code> allows to create data race to <code>T</code>.</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-01-26">
+    January 26, 2021
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag high">HIGH</span>
+      
+    <a href="/advisories/RUSTSEC-2020-0122.html">
+      RUSTSEC-2020-0122: Vulnerability in beef
+    </a>
+  </h3>
+  <span><p>beef::Cow lacks a Sync bound on its Send trait allowing for data races</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-01-25">
+    January 25, 2021
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag high">HIGH</span>
+      
+    <a href="/advisories/RUSTSEC-2020-0120.html">
+      RUSTSEC-2020-0120: Unsoundness in libsbc
+    </a>
+  </h3>
+  <span><p><code>Decoder&lt;R&gt;</code> can carry <code>R: !Send</code> to other threads</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-01-25">
+    January 25, 2021
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag high">HIGH</span>
+      
+    <a href="/advisories/RUSTSEC-2020-0119.html">
+      RUSTSEC-2020-0119: Vulnerability in ticketed_lock
+    </a>
+  </h3>
+  <span><p>ReadTicket and WriteTicket should only be sendable when T is Send</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-01-25">
+    January 25, 2021
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag high">HIGH</span>
+      
+    <a href="/advisories/RUSTSEC-2020-0121.html">
+      RUSTSEC-2020-0121: Vulnerability in abox
+    </a>
+  </h3>
+  <span><p>AtomicBox<!-- raw HTML omitted --> implements Send/Sync for any <code>T: Sized</code></p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-01-24">
+    January 24, 2021
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag high">HIGH</span>
+      
+    <a href="/advisories/RUSTSEC-2020-0116.html">
+      RUSTSEC-2020-0116: Vulnerability in unicycle
+    </a>
+  </h3>
+  <span><p>PinSlab<!-- raw HTML omitted --> and Unordered&lt;T, S&gt; need bounds on their Send/Sync traits</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-01-24">
+    January 24, 2021
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag high">HIGH</span>
+      
+    <a href="/advisories/RUSTSEC-2020-0117.html">
+      RUSTSEC-2020-0117: Vulnerability in conqueue
+    </a>
+  </h3>
+  <span><p>QueueSender<!-- raw HTML omitted -->/QueueReceiver<!-- raw HTML omitted -->: Send/Sync impls need <code>T: Send</code></p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-01-24">
+    January 24, 2021
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag high">HIGH</span>
+      
+    <a href="/advisories/RUSTSEC-2020-0118.html">
+      RUSTSEC-2020-0118: Vulnerability in tiny_future
+    </a>
+  </h3>
+  <span><p>Future<!-- raw HTML omitted --> lacks bounds on Send and Sync.</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-01-24">
+    January 24, 2021
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2021-0013.html">
+      RUSTSEC-2021-0013: Vulnerability in raw-cpuid
+    </a>
+  </h3>
+  <span><p>Soundness issues in <code>raw-cpuid</code></p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-01-22">
+    January 22, 2021
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag high">HIGH</span>
+      
+    <a href="/advisories/RUSTSEC-2020-0115.html">
+      RUSTSEC-2020-0115: Vulnerability in ruspiro-singleton
+    </a>
+  </h3>
+  <span><p>Singleton lacks bounds on Send and Sync.</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-01-21">
+    January 21, 2021
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag medium">MEDIUM</span>
+      
+    <a href="/advisories/RUSTSEC-2020-0114.html">
+      RUSTSEC-2020-0114: Vulnerability in va-ts
+    </a>
+  </h3>
+  <span><p><code>Demuxer</code> can carry non-Send types across thread boundaries</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-01-20">
+    January 20, 2021
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag medium">MEDIUM</span>
+      
+    <a href="/advisories/RUSTSEC-2020-0113.html">
+      RUSTSEC-2020-0113: Vulnerability in atomic-option
+    </a>
+  </h3>
+  <span><p>AtomicOption should have Send + Sync bound on its type argument.</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-01-20">
+    January 20, 2021
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag high">HIGH</span>
+      
+    <a href="/advisories/RUSTSEC-2020-0101.html">
+      RUSTSEC-2020-0101: Vulnerability in conquer-once
+    </a>
+  </h3>
+  <span><p>conquer-once's OnceCell lacks Send bound for its Sync trait.</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-01-20">
+    January 20, 2021
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag high">HIGH</span>
+      
+    <a href="/advisories/RUSTSEC-2021-0009.html">
+      RUSTSEC-2021-0009: Vulnerability in basic_dsp_matrix
+    </a>
+  </h3>
+  <span><p>panic safety issue in <code>impl TransformContent&lt;S, D&gt; for [S; (2|3|4)]</code></p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-01-20">
+    January 20, 2021
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag critical">CRITICAL</span>
+      
+    <a href="/advisories/RUSTSEC-2021-0010.html">
+      RUSTSEC-2021-0010: Vulnerability in containers
+    </a>
+  </h3>
+  <span><p>panic safety: double drop may happen within <code>util::{mutate, mutate2}</code></p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-01-20">
+    January 20, 2021
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag medium">MEDIUM</span>
+      
+    <a href="/advisories/RUSTSEC-2020-0111.html">
+      RUSTSEC-2020-0111: Vulnerability in may_queue
+    </a>
+  </h3>
+  <span><p>may_queue's Queue lacks Send/Sync bound for its Send/Sync trait.</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-01-20">
+    January 20, 2021
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag medium">MEDIUM</span>
+      
+    <a href="/advisories/RUSTSEC-2020-0106.html">
+      RUSTSEC-2020-0106: Unsoundness in multiqueue2
+    </a>
+  </h3>
+  <span><p>Queues allow non-Send types to be sent to other threads, allowing data races</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-01-20">
+    January 20, 2021
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag high">HIGH</span>
+      
+    <a href="/advisories/RUSTSEC-2020-0103.html">
+      RUSTSEC-2020-0103: Vulnerability in autorand
+    </a>
+  </h3>
+  <span><p><code>impl Random</code> on arrays can lead to dropping uninitialized memory</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-01-20">
+    January 20, 2021
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag medium">MEDIUM</span>
+      
+    <a href="/advisories/RUSTSEC-2020-0108.html">
+      RUSTSEC-2020-0108: Vulnerability in eventio
+    </a>
+  </h3>
+  <span><p>Soundness issue: Input<!-- raw HTML omitted --> can be misused to create data race to an object</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-01-20">
+    January 20, 2021
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag high">HIGH</span>
+      
+    <a href="/advisories/RUSTSEC-2020-0105.html">
+      RUSTSEC-2020-0105: Vulnerability in abi_stable
+    </a>
+  </h3>
+  <span><p>Update unsound DrainFilter and RString::retain</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-01-20">
+    January 20, 2021
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag high">HIGH</span>
+      
+    <a href="/advisories/RUSTSEC-2020-0102.html">
+      RUSTSEC-2020-0102: Vulnerability in late-static
+    </a>
+  </h3>
+  <span><p>LateStatic has incorrect Sync bound</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-01-20">
+    January 20, 2021
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag high">HIGH</span>
+      
+    <a href="/advisories/RUSTSEC-2020-0104.html">
+      RUSTSEC-2020-0104: Vulnerability in gfwx
+    </a>
+  </h3>
+  <span><p>ImageChunkMut needs bounds on its Send and Sync traits</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-01-20">
+    January 20, 2021
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag high">HIGH</span>
+      
+    <a href="/advisories/RUSTSEC-2021-0011.html">
+      RUSTSEC-2021-0011: Vulnerability in fil-ocl
+    </a>
+  </h3>
+  <span><p>EventList's From<!-- raw HTML omitted --> conversions can double drop on panic.</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-01-20">
+    January 20, 2021
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag high">HIGH</span>
+      
+    <a href="/advisories/RUSTSEC-2020-0107.html">
+      RUSTSEC-2020-0107: Vulnerability in hashconsing
+    </a>
+  </h3>
+  <span><p>hashconsing's HConsed lacks Send/Sync bound for its Send/Sync trait.</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-01-20">
+    January 20, 2021
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag medium">MEDIUM</span>
+      
+    <a href="/advisories/RUSTSEC-2020-0112.html">
+      RUSTSEC-2020-0112: Vulnerability in buttplug
+    </a>
+  </h3>
+  <span><p>ButtplugFutureStateShared allows data race to (!Send|!Sync) objects</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-01-19">
+    January 19, 2021
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag high">HIGH</span>
+      
+    <a href="/advisories/RUSTSEC-2020-0099.html">
+      RUSTSEC-2020-0099: Vulnerability in aovec
+    </a>
+  </h3>
+  <span><p>Aovec<!-- raw HTML omitted --> lacks bound on its Send and Sync traits allowing data races</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-01-19">
+    January 19, 2021
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag critical">CRITICAL</span>
+      
+    <a href="/advisories/RUSTSEC-2020-0100.html">
+      RUSTSEC-2020-0100: Vulnerability in sys-info
+    </a>
+  </h3>
+  <span><p>Double free when calling <code>sys_info::disk_info</code> from multiple threads</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-01-19">
+    January 19, 2021
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag high">HIGH</span>
+      
+    <a href="/advisories/RUSTSEC-2021-0006.html">
+      RUSTSEC-2021-0006: Unsoundness in cache
+    </a>
+  </h3>
+  <span><p>Exposes internally used raw pointer</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-01-18">
+    January 18, 2021
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag medium">MEDIUM</span>
+      
+    <a href="/advisories/RUSTSEC-2020-0097.html">
+      RUSTSEC-2020-0097: Unsoundness in xcb
+    </a>
+  </h3>
+  <span><p>Soundness issue with base::Error</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-01-18">
+    January 18, 2021
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag medium">MEDIUM</span>
+      
+    <a href="/advisories/RUSTSEC-2021-0004.html">
+      RUSTSEC-2021-0004: Vulnerability in lazy-init
+    </a>
+  </h3>
+  <span><p>Missing Send bound for Lazy</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-01-18">
+    January 18, 2021
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag high">HIGH</span>
+      
+    <a href="/advisories/RUSTSEC-2020-0098.html">
+      RUSTSEC-2020-0098: Unsoundness in rusb
+    </a>
+  </h3>
+  <span><p>UsbContext trait did not require implementers to be Send and Sync.</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-01-18">
+    January 18, 2021
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag high">HIGH</span>
+      
+    <a href="/advisories/RUSTSEC-2021-0005.html">
+      RUSTSEC-2021-0005: Vulnerability in glsl-layout
+    </a>
+  </h3>
+  <span><p>Double drop upon panic in 'fn map_array()'</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-01-08">
+    January  8, 2021
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag critical">CRITICAL</span>
+      
+    <a href="/advisories/RUSTSEC-2021-0003.html">
+      RUSTSEC-2021-0003: Vulnerability in smallvec
+    </a>
+  </h3>
+  <span><p>Buffer overflow in SmallVec::insert_many</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2021-01-06">
+    January  6, 2021
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag medium">MEDIUM</span>
+      
+    <a href="/advisories/RUSTSEC-2020-0094.html">
+      RUSTSEC-2020-0094: Unsoundness in reffers
+    </a>
+  </h3>
+  <span><p>Unsound: can make <code>ARefss</code> contain a !Send, !Sync object.</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2020-12-11">
+    December 11, 2020
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag high">HIGH</span>
+      
+    <a href="/advisories/RUSTSEC-2020-0091.html">
+      RUSTSEC-2020-0091: Vulnerability in arc-swap
+    </a>
+  </h3>
+  <span><p>Dangling reference in <code>access::Map</code> with Constant</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2020-12-09">
+    December  9, 2020
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag medium">MEDIUM</span>
+      
+    <a href="/advisories/RUSTSEC-2020-0090.html">
+      RUSTSEC-2020-0090: Vulnerability in thex
+    </a>
+  </h3>
+  <span><p>Thex<!-- raw HTML omitted --> allows data races of non-Send types across threads</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2020-11-18">
+    November 18, 2020
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag medium">MEDIUM</span>
+      
+    <a href="/advisories/RUSTSEC-2020-0071.html">
+      RUSTSEC-2020-0071: Vulnerability in time
+    </a>
+  </h3>
+  <span><p>Potential segfault in the time crate</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2020-11-18">
+    November 18, 2020
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag medium">MEDIUM</span>
+      
+    <a href="/advisories/RUSTSEC-2020-0072.html">
+      RUSTSEC-2020-0072: Unsoundness in futures-intrusive
+    </a>
+  </h3>
+  <span><p>GenericMutexGuard allows data races of non-Sync types across threads</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2020-11-18">
+    November 18, 2020
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2020-0070.html">
+      RUSTSEC-2020-0070: Unsoundness in lock_api
+    </a>
+  </h3>
+  <span><p>Some lock_api lock guard objects can cause data races</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2020-10-31">
+    October 31, 2020
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag high">HIGH</span>
+      
+    <a href="/advisories/RUSTSEC-2020-0060.html">
+      RUSTSEC-2020-0060: Vulnerability in futures-task
+    </a>
+  </h3>
+  <span><p>futures_task::waker may cause a use-after-free if used on a type that isn't 'static</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2020-10-31">
+    October 31, 2020
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag medium">MEDIUM</span>
+      
+    <a href="/advisories/RUSTSEC-2020-0062.html">
+      RUSTSEC-2020-0062: Vulnerability in futures-util
+    </a>
+  </h3>
+  <span><p>Improper <code>Sync</code> implementation on <code>FuturesUnordered</code> in futures-utils can cause data corruption</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2020-10-25">
+    October 25, 2020
+  </time>
+
+  
+  <h3>
+    
+        
+          <span class="tag info">INFO</span>
+        
+    
+    <a href="/advisories/RUSTSEC-2019-0038.html">
+      RUSTSEC-2019-0038: Unsoundness in libpulse-binding
+    </a>
+  </h3>
+  <span><p>Fix for UB in failure to catch panics crossing FFI boundaries</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2020-10-25">
+    October 25, 2020
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2018-0021.html">
+      RUSTSEC-2018-0021: Vulnerability in libpulse-binding
+    </a>
+  </h3>
+  <span><p>Use-after-free with objects returned by <code>Stream</code>'s <code>get_format_info</code> and <code>get_context</code> methods</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2020-10-22">
+    October 22, 2020
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag medium">MEDIUM</span>
+      
+    <a href="/advisories/RUSTSEC-2018-0020.html">
+      RUSTSEC-2018-0020: Vulnerability in libpulse-binding
+    </a>
+  </h3>
+  <span><p>Possible use-after-free with <code>proplist::Iterator</code></p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2020-10-11">
+    October 11, 2020
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2020-0052.html">
+      RUSTSEC-2020-0052: Vulnerability in crossbeam-channel
+    </a>
+  </h3>
+  <span><p>Undefined Behavior in bounded channel</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2020-10-01">
+    October  1, 2020
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag critical">CRITICAL</span>
+      
+    <a href="/advisories/RUSTSEC-2019-0022.html">
+      RUSTSEC-2019-0022: Vulnerability in portaudio-rs
+    </a>
+  </h3>
+  <span><p>Stream callback function is not unwind safe</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2020-10-01">
+    October  1, 2020
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag critical">CRITICAL</span>
+      
+    <a href="/advisories/RUSTSEC-2019-0034.html">
+      RUSTSEC-2019-0034: Vulnerability in http
+    </a>
+  </h3>
+  <span><p>HeaderMap::Drain API is unsound</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2020-10-01">
+    October  1, 2020
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag high">HIGH</span>
+      
+    <a href="/advisories/RUSTSEC-2020-0017.html">
+      RUSTSEC-2020-0017: Vulnerability in internment
+    </a>
+  </h3>
+  <span><p>Use after free in ArcIntern::drop</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2020-10-01">
+    October  1, 2020
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag critical">CRITICAL</span>
+      
+    <a href="/advisories/RUSTSEC-2020-0005.html">
+      RUSTSEC-2020-0005: Vulnerability in cbox
+    </a>
+  </h3>
+  <span><p>CBox API allows to de-reference raw pointers without <code>unsafe</code> code</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2020-10-01">
+    October  1, 2020
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag critical">CRITICAL</span>
+      
+    <a href="/advisories/RUSTSEC-2019-0015.html">
+      RUSTSEC-2019-0015: Vulnerability in compact_arena
+    </a>
+  </h3>
+  <span><p>Flaw in generativity allows out-of-bounds access</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2020-10-01">
+    October  1, 2020
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag critical">CRITICAL</span>
+      
+    <a href="/advisories/RUSTSEC-2020-0027.html">
+      RUSTSEC-2020-0027: Unsoundness in traitobject
+    </a>
+  </h3>
+  <span><p>traitobject assumes the layout of fat pointers</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2020-10-01">
+    October  1, 2020
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag high">HIGH</span>
+      
+    <a href="/advisories/RUSTSEC-2020-0048.html">
+      RUSTSEC-2020-0048: Vulnerability in actix-http
+    </a>
+  </h3>
+  <span><p>Use-after-free in BodyStream due to lack of pinning</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2020-10-01">
+    October  1, 2020
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2018-0019.html">
+      RUSTSEC-2018-0019: Vulnerability in actix-web
+    </a>
+  </h3>
+  <span><p>Multiple memory safety issues</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2020-10-01">
+    October  1, 2020
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag critical">CRITICAL</span>
+      
+    <a href="/advisories/RUSTSEC-2020-0021.html">
+      RUSTSEC-2020-0021: Vulnerability in rio
+    </a>
+  </h3>
+  <span><p>rio allows a use-after-free buffer access when a future is leaked</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2020-10-01">
+    October  1, 2020
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag critical">CRITICAL</span>
+      
+    <a href="/advisories/RUSTSEC-2020-0002.html">
+      RUSTSEC-2020-0002: Vulnerability in prost
+    </a>
+  </h3>
+  <span><p>Parsing a specially crafted message can result in a stack overflow</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2020-10-01">
+    October  1, 2020
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag critical">CRITICAL</span>
+      
+    <a href="/advisories/RUSTSEC-2020-0045.html">
+      RUSTSEC-2020-0045: Unsoundness in actix-utils
+    </a>
+  </h3>
+  <span><p>bespoke Cell implementation allows obtaining several mutable references to the same data</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2020-10-01">
+    October  1, 2020
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag critical">CRITICAL</span>
+      
+    <a href="/advisories/RUSTSEC-2020-0049.html">
+      RUSTSEC-2020-0049: Vulnerability in actix-codec
+    </a>
+  </h3>
+  <span><p>Use-after-free in Framed due to lack of pinning</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2020-10-01">
+    October  1, 2020
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag medium">MEDIUM</span>
+      
+    <a href="/advisories/RUSTSEC-2019-0037.html">
+      RUSTSEC-2019-0037: Vulnerability in pnet
+    </a>
+  </h3>
+  <span><p>Compiler optimisation for next_with_timeout in pnet::transport::IcmpTransportChannelIterator flaws to SEGFAULT</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2020-10-01">
+    October  1, 2020
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag critical">CRITICAL</span>
+      
+    <a href="/advisories/RUSTSEC-2020-0007.html">
+      RUSTSEC-2020-0007: Vulnerability in bitvec
+    </a>
+  </h3>
+  <span><p>use-after or double free of allocated memory</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2020-10-01">
+    October  1, 2020
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag critical">CRITICAL</span>
+      
+    <a href="/advisories/RUSTSEC-2018-0011.html">
+      RUSTSEC-2018-0011: Vulnerability in arrayfire
+    </a>
+  </h3>
+  <span><p>Enum repr causing potential memory corruption</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2020-10-01">
+    October  1, 2020
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/RUSTSEC-2020-0034.html">
+      RUSTSEC-2020-0034: Vulnerability in arr
+    </a>
+  </h3>
+  <span><p>Multiple security issues including data race, buffer overflow, and uninitialized memory drop</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2020-10-01">
+    October  1, 2020
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag critical">CRITICAL</span>
+      
+    <a href="/advisories/RUSTSEC-2020-0004.html">
+      RUSTSEC-2020-0004: Vulnerability in lucet-runtime-internals
+    </a>
+  </h3>
+  <span><p>sigstack allocation bug can cause memory corruption or leak</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2020-10-01">
+    October  1, 2020
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag critical">CRITICAL</span>
+      
+    <a href="/advisories/RUSTSEC-2019-0021.html">
+      RUSTSEC-2019-0021: Vulnerability in linea
+    </a>
+  </h3>
+  <span><p><code>Matrix::zip_elements</code> causes double free</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2020-10-01">
+    October  1, 2020
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag medium">MEDIUM</span>
+      
+    <a href="/advisories/RUSTSEC-2020-0046.html">
+      RUSTSEC-2020-0046: Unsoundness in actix-service
+    </a>
+  </h3>
+  <span><p>bespoke Cell implementation allows obtaining several mutable references to the same data</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2020-10-01">
+    October  1, 2020
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag critical">CRITICAL</span>
+      
+    <a href="/advisories/RUSTSEC-2019-0012.html">
+      RUSTSEC-2019-0012: Vulnerability in smallvec
+    </a>
+  </h3>
+  <span><p>Memory corruption in SmallVec::grow()</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2020-10-01">
+    October  1, 2020
+  </time>
+
+  
+  <h3>
+    
+      <span class="tag critical">CRITICAL</span>
+      
+    <a href="/advisories/CVE-2018-1000810.html">
+      CVE-2018-1000810: Vulnerability in std
+    </a>
+  </h3>
+  <span><p>Buffer overflow vulnerability in str::repeat()</p>
+</span>
+  
+</li>
+      
+      <li>
+  <time datetime="2020-10-01">
+    October  1, 2020
+  </time>
+
+  
+  <h3>
+    
+        
+    
+    <a href="/advisories/CVE-2019-12083.html">
+      CVE-2019-12083: Vulnerability in std
+    </a>
+  </h3>
+  <span><p>Memory safety vulnerabilities arising from <code>Error::type_id</code></p>
+</span>
+  
+</li>
+      
+    </ul>
+  </article>
+</main>
